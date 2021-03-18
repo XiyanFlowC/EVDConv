@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EVDConv": {
+      "commandName": "Project",
+      "commandLineArgs": "/i?1.evd /o?1.new.txt"
+    }
+  }
+}
