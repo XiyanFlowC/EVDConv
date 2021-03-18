@@ -19,7 +19,7 @@ namespace EVDConv
             decodeTable = new Dictionary<int, char>();
             encodeTable = new Dictionary<char, int>();
             string[] lines = File.ReadAllLines(tablePath);
-            foreach (string line in lines)
+            foreach (string line in lines)//码表初始化
             {
                 if (string.IsNullOrEmpty(line)) continue;
 
@@ -41,7 +41,7 @@ namespace EVDConv
         /// <summary>
         /// 转换为EVD
         /// </summary>
-        /// <param name="tltLines">TLT的全部内容</param>
+        /// <param name="tltLines">TLT的全部行</param>
         /// <param name="pattern">模板EVD</param>
         /// <returns>取得的EVD，失败返回null</returns>
         public EVDFile Convert(string[] tltLines, EVDFile pattern)
@@ -122,11 +122,11 @@ namespace EVDConv
                     continue;
                 }
 
-                if(a == 0)
+                if(a == 0)//终结字符处理
                 {
                     break;
                 }
-                else if(a > 0x7f)//DBC 起始标志
+                else if(a > 0x7f)//双字节字符处理
                 {
                     tmp = a << 8;
                 }
@@ -161,10 +161,16 @@ namespace EVDConv
             return result.ToArray();
         }
 
+        /// <summary>
+        /// 将EVD文件转换为文本形式（配合Assemble搞定EVD的完全重生成）
+        /// </summary>
+        /// <param name="src">原始EVD文件</param>
+        /// <param name="cdb">宏元数据</param>
+        /// <returns>转换的文本</returns>
         public string DumpToText(EVDFile src, CommandDataBank cdb)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("[TextDataBank]\n");
+            sb.Append("[TextDataBank]\n");//TODO: 格式需要再确定
             sb.Append("#ID,Narrator,PortraidID,Position,PortraitDiffA,PortraitDiffB,Text\n");
             foreach(var entry in src.EventTexts)
             {
@@ -175,11 +181,11 @@ namespace EVDConv
             foreach(var entry in src.EventMacros)
             {
                 var data = cdb.GetCommandData(entry.OpCode);
-                sb.Append(data.Name);
+                sb.Append(data.Name);//宏名
 
-                if(data.ParamNum != 0)
+                if(data.ParamNum != 0)//输出宏参数，逗号分割
                 {
-                    sb.Append("\t\t");
+                    sb.Append("\t\t");//换成空格保持排版（？
                     sb.Append(entry.Args[0]);
 
                     for (int i = 1; i < entry.Args.Length; i++)
@@ -215,7 +221,7 @@ namespace EVDConv
             }
             sb.Append('\n');
 
-            sb.Append("[SelectionGroup]\n.Count=");
+            sb.Append("[SelectionGroup]\n.Count=");//Count 或为多余
             sb.Append(src.EventSelectionGroups.Count);
             sb.Append("\n");
             foreach(var group in src.EventSelectionGroups)
