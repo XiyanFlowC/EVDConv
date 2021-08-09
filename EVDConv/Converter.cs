@@ -177,7 +177,7 @@ namespace EVDConv
                 sb.Append($"{entry.ID},{entry.Narrator},{entry.PortraitID},{entry.Position},{entry.PortraitDiffA},{entry.PortraitDiffB},{ConvANSIString(entry.Data)}\n\n");
             }
 
-            sb.Append("[ControllMacro]\n");
+            sb.Append("[ControllMacroSeq]\n");
             foreach(var entry in src.EventMacros)
             {
                 var data = cdb.GetCommandData(entry.OpCode);
@@ -199,7 +199,7 @@ namespace EVDConv
             }
             sb.Append('\n');
 
-            sb.Append("[FinnalizeMacro]\n");
+            sb.Append("[FinnalizeMacroSeq]\n");
             foreach(var entry in src.EventFinalizeSeqMacros)
             {
                 var data = cdb.GetCommandData(entry.OpCode);

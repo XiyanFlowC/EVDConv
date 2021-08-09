@@ -77,7 +77,7 @@ namespace EVDConv
                     Console.WriteLine($"Arg {arg} incorrect.");
                     return -1;
                 }
-                string[] kvp = arg.Split('?');
+                string[] kvp = arg.Split('=');
                 string key = kvp[0][1..];
                 string value = kvp.Length > 1 ? kvp[1] : null;
 

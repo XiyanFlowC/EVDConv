@@ -226,7 +226,7 @@ namespace EVDConv
         private static byte[] GetPaddedData(byte[] data, int padByte = 4)
         {
             int leng = data.Length;
-            leng = (leng + (padByte - 1)) & ~(padByte - 1);
+            leng = (leng & ~(padByte - 1)) + 4;
             byte[] padded = new byte[leng];
             data.CopyTo(padded, 0);
             return padded;
@@ -325,7 +325,7 @@ namespace EVDConv
         /// <returns></returns>
         private byte[] GetANSIString(BinaryReader reader, int length)//TODO:增加码表转换
         {
-            length = (length + 3) & (~3);
+            length = (length & ~3) + 4;
             byte[] ori = reader.ReadBytes(length);
             List<byte> result = new List<byte>();
             foreach(byte bt in ori)
