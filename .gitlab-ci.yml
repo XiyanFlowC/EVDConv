@@ -1,0 +1,15 @@
+stages:
+  - build
+
+build: 
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:3.1
+  only:
+    - master
+  script:
+    - dotnet publish -c release -o out -r win-x64 -p:DebugType=None -p:DebugSymbols=false -p:PublishSingleFile=true --self-contained false
+  artifacts:
+    paths:
+      - ./out/*
+    expire_in: 3 week
+
