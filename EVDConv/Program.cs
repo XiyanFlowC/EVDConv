@@ -70,9 +70,9 @@ namespace EVDConv
 
         static int ProcessArgu(string[] args)
         {
-            foreach(var arg in args)
+            foreach (var arg in args)
             {
-                if(arg[0] != '/')
+                if (arg[0] != '-')
                 {
                     Console.WriteLine($"Arg {arg} incorrect.");
                     return -1;
@@ -81,27 +81,27 @@ namespace EVDConv
                 string key = kvp[0][1..];
                 string value = kvp.Length > 1 ? kvp[1] : null;
 
-                if(key == "i")
+                if (key == "i")
                 {
-                    if(value == null)
+                    if (value == null)
                     {
                         Console.WriteLine("Parameter incorrect.");
                         return -2;
                     }
                     Config.InputFile = value;
                 }
-                if(key == "o")
+                if (key == "o")
                 {
-                    if(value == null)
+                    if (value == null)
                     {
                         Console.WriteLine("Parameter incorrect.");
                         return -3;
                     }
                     Config.OutputFile = value;
                 }
-                if(key == "m")
+                if (key == "m")
                 {
-                    if(value == null)
+                    if (value == null)
                     {
                         Console.WriteLine("Parameter incorrect.");
                         return -4;
@@ -115,23 +115,39 @@ namespace EVDConv
                         _ => Config.ConvMethod.EVD2TXT,
                     };
                 }
-                if(key == "t")
+                if (key == "t")
                 {
-                    if(value == null)
+                    if (value == null)
                     {
                         Console.WriteLine("Parameter incorrect.");
                         return -5;
                     }
                     Config.TableFile = value;
                 }
-                if(key == "p")
+                if (key == "p")
                 {
-                    if(value == null)
+                    if (value == null)
                     {
                         Console.WriteLine("Parameter incorrect.");
                         return -6;
                     }
                     Config.PatternFile = value;
+                }
+                if (key == "?")
+                {
+                    Console.Write(
+                        "EVD 转换器 作者：希研" +
+                        "=======================" +
+                        "参数说明：" +
+                        "-i=<input filename> 指定输入文件" +
+                        "-o=<output filename> 指定输出文件" +
+                        "-m=<1/2/3/4>" +
+                        "    1 - TLT to EVD" +
+                        "    2 - EVD to TLT" +
+                        "    3 - TXT to EVD（以TXT形式表述EVD流（包括文本库、宏、收尾宏、选项文本库））" +
+                        "    4 - EVD to TXT" +
+                        "-t=<encoding description.tbl> 指定码表文件" +
+                        "-p=<pattern file.evd> -m=1 时必须，程序依赖此模板 EVD 才能补足 TLT 中缺失信息生成 EVD");
                 }
             }
             return 0;
